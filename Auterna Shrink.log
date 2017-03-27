@@ -1,0 +1,14 @@
+0	1	mikroCdsPIC.exe -MSF -DBG -pP24FV16KM202 -DL -SSA -O11111114 -fo20 -N"C:\Users\Gabriel Dias\Downloads\Auterna Shrink\Auterna Shrink.mcpds" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\uses\" -SP"C:\Users\Gabriel Dias\Downloads\Auterna Shrink\" -SP"C:\Users\Kappes\Documents\Minerva Bots\PIC\Codigo Pic\Auterna shrink\" "Auterna Shrink.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_Conversions.mcl" "__Lib_ADC_1_24FXXKMX02.mcl" "__Lib_PWM_FXXKM20X.mcl" "__Lib_UART_12_p24_p33.mcl"	 
+warning: 0	1501	Specified search path does not exist: 'C:\Users\Kappes\Documents\Minerva Bots\PIC\Codigo Pic\Auterna shrink'	 
+diagnostics: 0	121	Loading...	 
+diagnostics: 0	122	Compilation Started	stdbool.h
+diagnostics: 315	123	Compiled Successfully	Auterna Shrink.c
+hint: 109	1164	Variable 'powerL' has been eliminated by optimizer	Auterna Shrink.c
+diagnostics: 0	127	All files Compiled in 125 ms	 
+hint: 0	1144	Used RX (bytes): 32 (100%)   Free RX (bytes): 0 (0%)	Used RX (bytes): 32 (100%)   Free RX (bytes): 0 (0%)
+hint: 0	1144	Static RAM (bytes): 4   Dynamic RAM (bytes): 2044	Static RAM (bytes): 4   Dynamic RAM (bytes): 2044
+hint: 0	1144	Used ROM (bytes): 3222 (29%)  Free ROM (bytes): 8042 (71%)	Used ROM (bytes): 3222 (29%)  Free ROM (bytes): 8042 (71%)
+diagnostics: 0	125	Project Linked Successfully	Auterna Shrink.mcpds
+diagnostics: 0	128	Linked in 204 ms	 
+diagnostics: 0	129	Project 'Auterna Shrink.mcpds' completed: 516 ms	 
+diagnostics: 0	103	Finished successfully: 02 3 2017, 18:15:11	Auterna Shrink.mcpds
