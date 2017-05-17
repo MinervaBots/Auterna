@@ -2,6 +2,7 @@
 #device ADC=8
 #device ICSP=1
 #use delay(crystal=20000000)
+#use rs232(UART1, baud=9600, stream=UART_PORT1)
 
 #FUSES NOWDT                    //No Watch Dog Timer
 #FUSES NOIESO                   //Internal External Switch Over mode disabled
