@@ -7,14 +7,14 @@ double PWM_ATUAL_ESQ = 127;
 double PWM_ATUAL_DIR = 127;
 int LIGADO = 0;
 
-char COMANDO_BT;
+char COMANDO_BT = 0;
+int ESTRATEGIA = 1;
 
 void INIT_ROBOT()
 {
    //inicializa os registradores do interrupt
-   ext_int_edge(L_TO_H); //define a mudança de estado na subida low to high (ou high to low, caso H_TO_L)
-   enable_interrupts(INT_EXT2); //habilita interrupção pela porta de int externo 2 -- RA06 -- Porta 20
-   enable_interrupts(INTR_GLOBAL); //habilita interrupções gerais
+   enable_interrupts(INT_RDA);
+   enable_interrupts(INTR_GLOBAL);
    
    
    //configura as portas RA0(porta 2) | RA1(porta 3)|
@@ -178,8 +178,23 @@ void GET_SENSORS()
    int OPONENTE_CENTRAL = input(PIN_OPONENTE_CENTRAL);
    int OPONENTE_DIAG_ESQ = input(PIN_OPONENTE_DIAG_ESQ);
    int OPONENTE_DIAG_DIR = input(PIN_OPONENTE_DIAG_DIR);
-
-   STAR_STRATEGY(BORDA_ESQUERDA, BORDA_DIREITA, OPONENTE_ESQ, OPONENTE_DIR, OPONENTE_CENTRAL, OPONENTE_DIAG_ESQ, OPONENTE_DIAG_DIR);
+   
+   //chama a estratégia de acordo com o comando dado por BT
+   switch(ESTRATEGIA)
+   {
+      case 1 :
+         STAR_STRATEGY(BORDA_ESQUERDA, BORDA_DIREITA, OPONENTE_ESQ, OPONENTE_DIR, OPONENTE_CENTRAL, OPONENTE_DIAG_ESQ, OPONENTE_DIAG_DIR);
+         break;
+      case 2 :
+         ESTRATEGIA_GIRO_NO_EIXO(BORDA_ESQUERDA, BORDA_DIREITA, OPONENTE_ESQ, OPONENTE_DIR, OPONENTE_CENTRAL, OPONENTE_DIAG_ESQ, OPONENTE_DIAG_DIR);
+         break;
+      case 3 :
+         ESTRATEGIA_OLE(BORDA_ESQUERDA, BORDA_DIREITA, OPONENTE_ESQ, OPONENTE_DIR, OPONENTE_CENTRAL, OPONENTE_DIAG_ESQ, OPONENTE_DIAG_DIR);
+         break;
+      case 4 :
+         ESTRATEGIA_CURVA_CEGA(BORDA_ESQUERDA, BORDA_DIREITA, OPONENTE_ESQ, OPONENTE_DIR, OPONENTE_CENTRAL, OPONENTE_DIAG_ESQ, OPONENTE_DIAG_DIR);
+         break;
+   }
 }
 
 // l -- ligar
@@ -189,9 +204,46 @@ void GET_SENSORS()
 // 3 -- estratégia 3
 // 4 -- estratégia 4
 
+#INT_RDA
+void  rda_isr(void) 
+{
+   //interrupt caso um comando seja dado por BT
+   clear_interrupt(INT_RDA);
+   COMANDO_BT = getch(); //armazena o comando recebido no pino rx do uart1
+   
+   //separa os comandos em uma variável que selecionará as estratégias, e outra que ligará e desligará o robô
+   switch(COMANDO_BT)
+   {
+      case "l" :
+         LIGADO = 1;
+         break;
+      case "d" :
+         LIGADO = 0;
+         break;
+      case "1" :
+         ESTRATEGIA = 1;
+         break;
+      case "2" :
+         ESTRATEGIA = 2;
+         break;
+      case "3" :
+         ESTRATEGIA = 3;
+         break;
+      case "4" :
+         ESTRATEGIA = 4;
+         break;
+   }
+}
+
 void main()
 {
    INIT_ROBOT();
+   printf("Digite '1', '2', '3', '4' para a selecao da estrategia\n");
+   printf("1 - Star\n");
+   printf("2 - giro\n");
+   printf("3 - ole\n");
+   printf("4 - curva\n");
+   printf("Digite 'l' ou 'd' para ligar ou desligar\n");
    while (LIGADO)
    {
       GET_SENSORS();
