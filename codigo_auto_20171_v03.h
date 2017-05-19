@@ -26,7 +26,6 @@
 #define PIN_MOTOR_ESQ           PIN_B11
 #define PIN_MOTOR_DIR           PIN_B12
 
-#define PIN_IR_RECEIVER         PIN_A6
 
 
 

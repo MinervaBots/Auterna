@@ -208,31 +208,41 @@ void GET_SENSORS()
 void  rda_isr(void) 
 {
    //interrupt caso um comando seja dado por BT
-   clear_interrupt(INT_RDA);
    COMANDO_BT = getch(); //armazena o comando recebido no pino rx do uart1
    
    //separa os comandos em uma variável que selecionará as estratégias, e outra que ligará e desligará o robô
    switch(COMANDO_BT)
    {
       case "l" :
+         printf("LIGOU!");
          LIGADO = 1;
          break;
       case "d" :
+         printf("DESLIGOU!");
          LIGADO = 0;
          break;
       case "1" :
+         printf("Estratégia 1 selecionada");
          ESTRATEGIA = 1;
          break;
       case "2" :
+         printf("Estratégia 2 selecionada");
          ESTRATEGIA = 2;
          break;
       case "3" :
+         printf("Estratégia 3 selecionada");
          ESTRATEGIA = 3;
          break;
       case "4" :
+         printf("Estratégia 4 selecionada");
          ESTRATEGIA = 4;
          break;
+      default :
+         printf("Comando nao identificado");
+         break;
    }
+   
+      clear_interrupt(INT_RDA);//zera a flag do interrupt
 }
 
 void main()
