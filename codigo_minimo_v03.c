@@ -1,7 +1,13 @@
 #include <codigo_auto_20171_v03.h>
 
-#define PERIODO 255 //periodo para o pwm
 #define DELAY_RAMPA 100 //delay para rampa de aceleração, em micro segundos
+
+//os valores para as constantes do primeiro DAC(right) e para o segundo(left)
+#define DAC_RIGHT_ON 1  //RB12
+#define DAC_RIGHT    1
+
+#define DAC_LEFT_ON  2  //RB14
+#define DAC_LEFT     2
 
 double PWM_ATUAL_ESQ = 127;
 double PWM_ATUAL_DIR = 127;
@@ -24,12 +30,10 @@ void INIT_ROBOT()
    setup_adc(ADC_CLOCK | ADC_TAD_MUL_0);
 
 
-   //inicializa os registradores CCP para o PWM
-   setup_ccp2(CCP_PWM);  // Configura CCP2 como PWM --- RB11 --- Porta 22
-   set_timer_period_ccp2(PERIODO); //seta o período do módulo ccp2
-   setup_ccp3(CCP_PWM);  // Configura CCP3 como PWM --- RB10 --- Porta 21
-   set_timer_period_ccp3(PERIODO); //seta o período do módulo ccp3
+   setup_dac(DAC_RIGHT_ON, DAC_ON | DAC_OUTPUT | DAC_REF_VDD); //habilita o módulo DAC, a saída DAC e o valor de referência de tensão para o DAC
+   setup_dac(DAC_LEFT_ON, DAC_ON | DAC_OUTPUT | DAC_REF_VDD);
 }
+
 void CONTROL_MOTORS(double LEFT_POWER, double RIGHT_POWER)
 {
    //o "256 - " é usado para normalizar o valor, já que sem a normalização o valor de maior tensão seria 1 e o menor 256.
@@ -41,7 +45,7 @@ void CONTROL_MOTORS(double LEFT_POWER, double RIGHT_POWER)
          delay_us(DELAY_RAMPA);
          //o pwm será setado para valores maiores a uma unidade do valor anterior, até alcançar a velocidade máxima
          //o valor a ser incrementado poderá ser alterado depois de testes
-         set_pwm2_duty(256 - ACELERACAO);
+         dac_write(DAC_LEFT, ACELERACAO);
          //o "256 - " é usado para normalizar o valor, já que sem a normalização o valor de maior tensão seria 1 e o menor 256.
          //com a normalização, o maior volta para o senso comum, sendo 255 e o menor 0.
       }
@@ -56,7 +60,7 @@ void CONTROL_MOTORS(double LEFT_POWER, double RIGHT_POWER)
          delay_us(DELAY_RAMPA);
          //o pwm será setado para valores menores a uma unidade do valor anterior, até alcançar a velocidade mínimo
          //o valor a ser decrementado poderá ser alterado depois de testes
-         set_pwm2_duty(256 - ACELERACAO);
+         dac_write(DAC_LEFT, ACELERACAO);
       }
       
       PWM_ATUAL_ESQ = LEFT_POWER;//o valor do pwm do motor esquerdo é atualizado
@@ -67,7 +71,7 @@ void CONTROL_MOTORS(double LEFT_POWER, double RIGHT_POWER)
       for(int ACELERACAO = PWM_ATUAL_DIR+1; ACELERACAO <= RIGHT_POWER; ACELERACAO++)
       {
          delay_us(DELAY_RAMPA);
-         set_pwm3_duty(256 - ACELERACAO);
+         dac_write(DAC_RIGHT, ACELERACAO);
       }
       
       PWM_ATUAL_DIR = RIGHT_POWER;//o valor do pwm do motor direito é atualizado
@@ -78,7 +82,7 @@ void CONTROL_MOTORS(double LEFT_POWER, double RIGHT_POWER)
       for(int ACELERACAO = PWM_ATUAL_DIR-1; ACELERACAO >= LEFT_POWER; ACELERACAO--)
       {
          delay_us(DELAY_RAMPA);
-         set_pwm3_duty(256 - ACELERACAO);
+         dac_write(DAC_RIGHT, ACELERACAO);
       }
       
       PWM_ATUAL_DIR = RIGHT_POWER;//o valor do pwm do motor direito é atualizado
@@ -208,6 +212,7 @@ void GET_SENSORS()
 void  rda_isr(void) 
 {
    //interrupt caso um comando seja dado por BT
+   disable_interrupts(INTR_GLOBAL);
    COMANDO_BT = getch(); //armazena o comando recebido no pino rx do uart1
    
    //separa os comandos em uma variável que selecionará as estratégias, e outra que ligará e desligará o robô
@@ -215,6 +220,7 @@ void  rda_isr(void)
    {
       case "l" :
          printf("LIGOU!");
+         delay_ms(5000); //delay para o início da luta
          LIGADO = 1;
          break;
       case "d" :
@@ -243,6 +249,7 @@ void  rda_isr(void)
    }
    
       clear_interrupt(INT_RDA);//zera a flag do interrupt
+      enable_interrupts(INTR_GLOBAL);
 }
 
 void main()
