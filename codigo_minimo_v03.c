@@ -20,6 +20,8 @@ int LIGADO = 0;
 char COMANDO_BT = 0;
 int ESTRATEGIA = 1;
 
+enum _flags {NONE, ON, OFF, FIRST_STR, SECOND_STR, THIRD_STR, FOURTH_STR} message_flag;
+
 /********************************************************************************************************************************************************************/
                                              /*Função para configurar registradores do DAC e ANSEL, e habilitar interrupções*/                     
 /********************************************************************************************************************************************************************/
@@ -233,6 +235,43 @@ void GET_SENSORS()
    }
 }
 /********************************************************************************************************************************************************************/
+                                                                  /*Envio de mensagens de debuging*/
+/********************************************************************************************************************************************************************/
+void messenger(void) {
+   switch(message_flag) {
+      case NONE:
+         break;
+      case ON:
+         printf("Ligou!\n");
+         message_flag = NONE;
+         break;
+      case OFF:
+         printf("Desligou!\n");
+         message_flag = NONE;
+         break;
+      case FIRST_STR:
+         printf("Estrategia 1 selecionada\n");
+         message_flag = NONE;
+         break;
+      case SECOND_STR:
+         printf("Estrategia 2 selecionada\n");
+         message_flag = NONE;
+         break;
+      case THIRD_STR:
+         printf("Estrategia 3 selecionada\n");
+         message_flag = NONE;
+         break;
+      case FOURTH_STR:
+         printf("Estrategia 4 selecionada\n");
+          message_flag = NONE;
+         break;
+      default:
+         printf("Comando não reconhecido\n");
+         message_flag = NONE;
+         break;
+   }
+}
+/********************************************************************************************************************************************************************/
                                                                      /*Interrupt Handler*/ 
 /********************************************************************************************************************************************************************/
                                                                                                                                      
@@ -254,28 +293,28 @@ void  rda_isr(void)
    switch(COMANDO_BT)
    {
       case "l" :
-         printf("LIGOU!");
+         message_flag = ON;
          delay_ms(5000); //delay para o início da luta
          LIGADO = 1;
          break;
       case "d" :
-         printf("DESLIGOU!");
+         message_flag = OFF;
          LIGADO = 0;
          break;
       case "1" :
-         printf("Estratégia 1 selecionada");
+         message_flag = FIRST_STR;
          ESTRATEGIA = 1;
          break;
       case "2" :
-         printf("Estratégia 2 selecionada");
+         message_flag = SECOND_STR;
          ESTRATEGIA = 2;
          break;
       case "3" :
-         printf("Estratégia 3 selecionada");
+         message_flag = THIRD_STR;
          ESTRATEGIA = 3;
          break;
       case "4" :
-         printf("Estratégia 4 selecionada");
+         message_flag = FOURTH_STR;
          ESTRATEGIA = 4;
          break;
       default :
@@ -293,6 +332,7 @@ void  rda_isr(void)
 void main()
 {
    INIT_ROBOT();
+   messenger();
    printf("Digite '1', '2', '3', '4' para a selecao da estrategia\n");
    printf("1 - Star\n");
    printf("2 - giro\n");
