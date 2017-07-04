@@ -1,5 +1,9 @@
 #include <codigo_auto_20171_v03.h>
 
+/********************************************************************************************************************************************************************/
+                                                                        /*Constantes*/
+/********************************************************************************************************************************************************************/
+                                                                        
 #define DELAY_RAMPA 100 //delay para rampa de aceleração, em micro segundos
 
 //os valores para as constantes do primeiro DAC(right) e para o segundo(left)
@@ -16,6 +20,10 @@ int LIGADO = 0;
 char COMANDO_BT = 0;
 int ESTRATEGIA = 1;
 
+/********************************************************************************************************************************************************************/
+                                             /*Função para configurar registradores do DAC e ANSEL, e habilitar interrupções*/                     
+/********************************************************************************************************************************************************************/
+                                               
 void INIT_ROBOT()
 {
    //inicializa os registradores do interrupt
@@ -34,6 +42,10 @@ void INIT_ROBOT()
    setup_dac(DAC_LEFT_ON, DAC_ON | DAC_OUTPUT | DAC_REF_VDD);
 }
 
+/********************************************************************************************************************************************************************/
+                                                /*Função para controlar os motores, com a rampa de aceleração para o DAC*/
+/********************************************************************************************************************************************************************/
+                                                    
 void CONTROL_MOTORS(double LEFT_POWER, double RIGHT_POWER)
 {
    //o "256 - " é usado para normalizar o valor, já que sem a normalização o valor de maior tensão seria 1 e o menor 256.
@@ -89,6 +101,10 @@ void CONTROL_MOTORS(double LEFT_POWER, double RIGHT_POWER)
    }
 }
 
+/********************************************************************************************************************************************************************/
+                                                                  /*Estratégia Estrela*/  
+/********************************************************************************************************************************************************************/
+                                                                                                                                  
 void STAR_STRATEGY(int BORDA_ESQUERDA, int BORDA_DIREITA, int OPONENTE_ESQ, int OPONENTE_DIR, int OPONENTE_CENTRAL, int OPONENTE_DIAG_ESQ, int OPONENTE_DIAG_DIR)
 {  
    if(BORDA_ESQUERDA >= 70)//70 é um valor hipotético que acionaria o sensor de borda, valor real a ser medido e testa com a arena
@@ -128,6 +144,10 @@ void STAR_STRATEGY(int BORDA_ESQUERDA, int BORDA_DIREITA, int OPONENTE_ESQ, int 
    }
 }
 
+/********************************************************************************************************************************************************************/
+                                                               /*Estratégia de giro no eixo*/  
+/********************************************************************************************************************************************************************/
+                                                                                                                                 
 void ESTRATEGIA_GIRO_NO_EIXO(int BORDA_ESQUERDA, int BORDA_DIREITA, int OPONENTE_ESQ, int OPONENTE_DIR, int OPONENTE_CENTRAL, int OPONENTE_DIAG_ESQ, int OPONENTE_DIAG_DIR)
 {
     if(OPONENTE_ESQ | OPONENTE_DIAG_ESQ) 
@@ -152,18 +172,30 @@ void ESTRATEGIA_GIRO_NO_EIXO(int BORDA_ESQUERDA, int BORDA_DIREITA, int OPONENTE
     //os valores passados a funcao CONTROL_MOTORS sao hipoteticos, ainda precisam ser testados na arena
 }
 
+/********************************************************************************************************************************************************************/
+                                                                  /*Estratégia do bruxo*/
+/********************************************************************************************************************************************************************/
+                                                                                                                                    
 void ESTRATEGIA_OLE(int BORDA_ESQUERDA, int BORDA_DIREITA, int OPONENTE_ESQ, int OPONENTE_DIR, int OPONENTE_CENTRAL, int OPONENTE_DIAG_ESQ, int OPONENTE_DIAG_DIR)
 {
     CONTROL_MOTORS(0, 0);
     STAR_STRATEGY(BORDA_ESQUERDA, BORDA_DIREITA, OPONENTE_ESQ, OPONENTE_DIR, OPONENTE_CENTRAL, OPONENTE_DIAG_ESQ, OPONENTE_DIAG_DIR);
 }
 
+/********************************************************************************************************************************************************************/
+                                                                  /*Estratégia do blind turn*/
+/********************************************************************************************************************************************************************/
+                                                                                                                                    
 void ESTRATEGIA_CURVA_CEGA(int BORDA_ESQUERDA, int BORDA_DIREITA, int OPONENTE_ESQ, int OPONENTE_DIR, int OPONENTE_CENTRAL, int OPONENTE_DIAG_ESQ, int OPONENTE_DIAG_DIR)
 {
     CONTROL_MOTORS(255, 190); //faz uma curva nao muito fechada para direita
     STAR_STRATEGY(BORDA_ESQUERDA, BORDA_DIREITA, OPONENTE_ESQ, OPONENTE_DIR, OPONENTE_CENTRAL, OPONENTE_DIAG_ESQ, OPONENTE_DIAG_DIR);
 }
 
+/********************************************************************************************************************************************************************/
+                                                           /*Função para armazenar os estados dos sensores*/       
+/********************************************************************************************************************************************************************/
+                                                                                                                             
 void GET_SENSORS()
 {
    set_adc_channel(0);//seleciona a porta analógica que será usada em seguida. No caso, 0 pois se trata da porta AN0.
@@ -200,7 +232,10 @@ void GET_SENSORS()
          break;
    }
 }
-
+/********************************************************************************************************************************************************************/
+                                                                     /*Interrupt Handler*/ 
+/********************************************************************************************************************************************************************/
+                                                                                                                                     
 // l -- ligar
 // d -- desligar
 // 1 -- estratégia 1
@@ -251,7 +286,10 @@ void  rda_isr(void)
       clear_interrupt(INT_RDA);//zera a flag do interrupt
       enable_interrupts(INTR_GLOBAL);
 }
-
+/********************************************************************************************************************************************************************/
+                                                                     /*Função principal*/  
+/********************************************************************************************************************************************************************/
+                                                                                                                                     
 void main()
 {
    INIT_ROBOT();
@@ -266,3 +304,4 @@ void main()
       GET_SENSORS();
    }
 }
+/********************************************************************************************************************************************************************/                                                                  
