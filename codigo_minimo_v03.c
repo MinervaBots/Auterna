@@ -103,6 +103,13 @@ void CONTROL_MOTORS(double LEFT_POWER, double RIGHT_POWER)
    }
 }
 
+// Alternative motor control function
+void motorControl(unsigned int8 l_power, unsigned int8 r_power) {
+   static unsigned int8 prev_l_power = 127, prev_r_power = 127;
+   
+   
+}
+
 /********************************************************************************************************************************************************************/
                                                                   /*Estratégia Estrela*/  
 /********************************************************************************************************************************************************************/
