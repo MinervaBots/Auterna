@@ -1,0 +1,7 @@
+[PROJECTS]
+Count=3
+Project0=..\UART\UART.mcpds
+Project1=..\UART_read\UART_read.mcpds
+Project2=opponent_sensor_read.mcpds
+[ActiveProject]
+Index=2

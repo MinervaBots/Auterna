@@ -1,0 +1,25 @@
+0	1	mikroCdsPIC.exe -MSF -DBG -pP24F16KM202 -RA -DL -SSA -O11111114 -fo4 -N"C:\Users\rafae\Documents\MinervaBots\tests\MikroC\opponent_sensor_read\opponent_sensor_read.mcpds" -SP"C:\Users\rafae\Documents\Mikroelektronika\mikroC PRO for dsPIC\Defs\" -SP"C:\Users\rafae\Documents\Mikroelektronika\mikroC PRO for dsPIC\Uses\" -SP"C:\Users\rafae\Documents\MinervaBots\tests\MikroC\opponent_sensor_read\" "opponent_sensor_read.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_CType.mcl" "__Lib_CString.mcl" "__Lib_CStdlib.mcl" "__Lib_CMath.mcl" "__Lib_Setjmp.mcl" "__Lib_MemManager.mcl" "__Lib_Conversions.mcl" "__Lib_Sprintf.mcl" "__Lib_PrintOut.mcl" "__Lib_Sprinti.mcl" "__Lib_Sprintl.mcl" "__Lib_Time.mcl" "__Lib_Trigonometry.mcl" "__Lib_Button.mcl" "__Lib_Keypad4x4.mcl" "__Lib_Manchester.mcl" "__Lib_OneWire.mcl" "__Lib_PS2.mcl" "__Lib_Sound.mcl" "__Lib_SoftI2C.mcl" "__Lib_SoftSPI.mcl" "__Lib_SoftUART.mcl" "__Lib_ADC_1_24FXXKMX02.mcl" "__Lib_EEPROM_p24_KA.mcl" "__Lib_FLASH_p24_KM.mcl" "__Lib_I2C_12_MSSP.mcl" "__Lib_PWM_FXXKM20X.mcl" "__Lib_SPI_12_MSSP.mcl" "__Lib_UART_12_p24_p33.mcl" "__Lib_PortExpander.mcl" "__Lib_CANSPI.mcl" "__Lib_CF.mcl" "__Lib_CFFat16.mcl" "__Lib_GlcdFonts.mcl" "__Lib_Glcd.mcl" "__Lib_LcdConsts.mcl" "__Lib_Lcd.mcl" "__Lib_Mmc.mcl" "__Lib_MmcFat16.mcl" "__Lib_MmcFat16Constants.mcl" "__Lib_RS485.mcl" "__Lib_S1D13700.mcl" "__Lib_T6963C.mcl" "__Lib_SPIGlcd.mcl" "__Lib_SPILcd.mcl" "__Lib_SPILcd8.mcl" "__Lib_SPIT6963C.mcl" "__Lib_EthEnc28j60.mcl" "__Lib_EthEnc24j600.mcl" "__Lib_TouchPanel.mcl"	 
+diagnostics: 0	121	Loading...	 
+diagnostics: 0	122	Compilation Started	P24F16KM202.c
+diagnostics: 10491	123	Compiled Successfully	P24F16KM202.c
+diagnostics: 0	122	Compilation Started	__Lib_Delays.c
+diagnostics: 695	123	Compiled Successfully	__Lib_Delays.c
+diagnostics: 0	122	Compilation Started	__Lib_MemManager.c
+warning: 34	1508	Implicit conversion of int to ptr	__Lib_MemManager.c
+warning: 155	1506	Implicit conversion of pointer to int	__Lib_MemManager.c
+warning: 174	1508	Implicit conversion of int to ptr	__Lib_MemManager.c
+diagnostics: 295	123	Compiled Successfully	__Lib_MemManager.c
+diagnostics: 0	122	Compilation Started	__Lib_GlcdFonts.c
+diagnostics: 1207	123	Compiled Successfully	__Lib_GlcdFonts.c
+diagnostics: 0	122	Compilation Started	__lib_mmcfat16.h
+diagnostics: 71	123	Compiled Successfully	__Lib_MmcFat16Constants.c
+diagnostics: 0	122	Compilation Started	opponent_sensor_read.c
+diagnostics: 12	123	Compiled Successfully	opponent_sensor_read.c
+diagnostics: 0	127	All files Compiled in 141 ms	 
+hint: 0	1144	Used RX (bytes): 32 (100%)   Free RX (bytes): 0 (0%)	Used RX (bytes): 32 (100%)   Free RX (bytes): 0 (0%)
+hint: 0	1144	Static RAM (bytes): 37   Dynamic RAM (bytes): 2010	Static RAM (bytes): 37   Dynamic RAM (bytes): 2010
+hint: 0	1144	Used ROM (bytes): 1125 (10%)  Free ROM (bytes): 10139 (90%)	Used ROM (bytes): 1125 (10%)  Free ROM (bytes): 10139 (90%)
+diagnostics: 0	125	Project Linked Successfully	opponent_sensor_read.mcpds
+diagnostics: 0	128	Linked in 843 ms	 
+diagnostics: 0	129	Project 'opponent_sensor_read.mcpds' completed: 2984 ms	 
+diagnostics: 0	103	Finished successfully: 17 ago 2017, 14:27:32	opponent_sensor_read.mcpds

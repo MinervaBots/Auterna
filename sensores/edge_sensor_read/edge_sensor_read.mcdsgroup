@@ -1,0 +1,6 @@
+[PROJECTS]
+Count=2
+Project0=..\UART_read\UART_read.mcpds
+Project1=edge_sensor_read.mcpds
+[ActiveProject]
+Index=1
