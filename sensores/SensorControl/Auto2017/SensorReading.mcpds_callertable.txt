@@ -1,0 +1,16 @@
+main
+	init_robot
+	mySensorControl
+		UART2_Write_Text
+			UART2_Write
+		IntToStr
+			WordToStr
+		_Long2Float
+		_Compare_Le_Fp
+			_Compare_Fp
+		_Compare_Ge_Fp
+			_Compare_Fp
+		_AddSub_FP
+		_Float2Longint
+		_Sub_FP
+			_AddSub_FP
