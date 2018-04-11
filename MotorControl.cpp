@@ -1,10 +1,13 @@
+#include "MotorControl.hpp"
+#include "Arduino.h"
+
 #define LEFT_MOTOR  5
 #define RIGHT_MOTOR  6
 
 int minVel = 0;
 int maxVel = 0;
 
-void MotorControl::drive(const int linearSpeed, const double angularSpeed){
+void MotorControl::drive(const int linearSpeed, const double angularSpeed) const {
   float leftVel = linearSpeed - angularSpeed;
   float rightVel = linearSpeed + angularSpeed;
 

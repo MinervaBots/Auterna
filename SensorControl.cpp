@@ -1,35 +1,22 @@
-#include "PidControl.h"
-
-#define SENSOR_ODD  0
-#define SENSOR_OCC  1
-#define SENSOR_ODE  2
-#define SENSOR_OCE  3
-#define SENSOR_OCD  4
-
-int ODD;
-int ODE;
-int OCE;
-int OCD;
-int OCC;
-    
-float sensorRead(){
-    ODD = digitalRead(SENSOR_ODD);
-    ODE = digitalRead(SENSOR_ODE);
-    OCE = digitalRead(SENSOR_OCE);
-    OCD = digitalRead(SENSOR_OCD);
-    OCC = digitalRead(SENSOR_OCC);
-
-
-    int sum = 0;
-    float error = 0;
-    //faz uma média entre os sensores. Os pesos escolhidos precisam ser testados
-    int  soma = (-2*ODE + -1*OCE + 0*OCC + OCD +2*ODD);
-
-    error = soma/10;
-
-    return error;
-}
+#include "SensorControl.h"
+#include "Arduino.h"
  
-  
+void SensorControl :: sensorRead(){
+   
+   _opponent[0] = digitalRead(_OE);
+   _opponent[1] = digitalRead(_ODE);
+   _opponent[2] = digitalRead(_OC);
+   _opponent[3] = digitalRead(_ODD);
+   _opponent[4] = digitalRead(_OD);
+  _rightEdgeValue = analogRead(_rightEdge);
+  _leftEdgeValue = analogRead(_leftEdge);
+}
 
+void SensorControl :: getReadings(SensorReadings& sr) {
+  for(int i = 0; i != 5; ++i)
+    sr.opponent[i] = _opponent[i];
+
+  sr.leftEdgeValue = _leftEdgeValue;
+  sr.rightEdgeValue = _rightEdgeValue;
+}
 
