@@ -8,7 +8,8 @@ void setup() {
 }
 
 void loop() {
-
+  // inputs
+  // Auterna.step(inp)
 }
 
 

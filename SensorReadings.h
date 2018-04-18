@@ -7,4 +7,9 @@ typedef struct {
   int rightEdgeValue;
 } SensorReadings;
 
+typedef struct {
+  int leftEdgeValue;
+  int rightEdgeValue;
+} SearchStrategyInput;
+
 #endif
