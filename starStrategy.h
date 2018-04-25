@@ -6,6 +6,7 @@
 
 #include "StateMachine.h"
 #include "SensorReadings.h"
+#include "MotorControl.hpp"
 
 enum class StarSearchInsideAction {
   forward;
@@ -22,7 +23,7 @@ public:
   unsigned long actionTimeout;
 };
 
-class StarStrategy : public StateMachine<SearchStrategyInput, void, StarSearchState> {
+class StarStrategy : public StateMachine<SearchStrategyInput, StarSearchState, StarSearchInsideAction> {
     StarStrategy() : StateMachine(StarSearchState(false, StarSearchInsideAction::forward, 0)) {}
 
     void getNextValues(StarSearchState state, SearchStrategyInput inp) {
@@ -54,7 +55,22 @@ class StarStrategy : public StateMachine<SearchStrategyInput, void, StarSearchSt
     }
 
     void step(SearchStrategyInput inp) {
-      //
+      StarSearchState outState;
+      StarSearchInsideAction action = getNextValues(this->_state, inp, outState);
+
+      this->_state = outState;
+
+      switch(action) {
+        case StarSearchInsideAction::forward:
+          drive(255, 0);
+          break;
+        case StarSearchInsideAction::backward:
+          drive(0, 0);
+          break;
+        case StarSearchInsideAction::curve:
+          drive(0, 255);
+          break;       
+      }
     }
 };
 

@@ -1,13 +1,13 @@
 template<class T_INP, class T_STATE, class T_OUT>
 class StateMachine{
    public:
-   StateMachine (int initialState):
+   StateMachine (T_STATE initialState):
    _state(initialState) {};
   
-  virtual int getNextValues(int state, int inp, int& outState) {};
-  virtual void step(int inp) {};  
+  virtual int getNextValues(T_STATE state, T_INP inp, T_STATE& outState) {};
+  virtual void step(T_INP inp) {};  
   
   protected:
-    int _state;   
+    T_STATE _state;   
 };
 
