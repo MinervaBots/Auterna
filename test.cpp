@@ -1,24 +1,35 @@
 // #include <iostream>
 // #include <string>
+// #include "StateMachine.h"
 
-// class A {
+// class A : public StateMachine<int, int, int>{
 // public:
-//     A(std::string m) : message(m) {}
+//     A() : StateMachine(0) {}
 
-//     std::string message;
+//     int getNextValues(int state, int inp, int& outState);
+//     void step(int inp);
 // };
 
-// class B {
-// public:
-//     B() : aInstance(A("qwerty")) {}
+// int A::getNextValues(int state, int inp, int& outState) {
+//     return outState = state + inp;
+// }
 
-//     A aInstance;
-// };
+// void A::step(int inp) {
+//     int outState;
+
+//     int out = this->getNextValues(this->_state, inp, outState);
+//     this->_state = outState;
+
+//     std::cout << "Out: " << out << std::endl;
+// }
 
 // int main(void) {
-//     B b;
+//     StateMachine<int, int, int>* a = new A();
 
-//     std::cout << "Message: " << b.aInstance.message << std::endl;
+//     a->step(1);
+//     a->step(7);
+//     a->step(-4);
+//     a->step(-3);
 
 //     return 0;
 // }
