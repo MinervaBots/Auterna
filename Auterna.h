@@ -2,6 +2,7 @@
 #define AUTERNA_H
 
 #include "StateMachine.h"
+#include "OpponentDetector.h"
 #include "SensorReadings.h"
 #include "Arduino.h"
 #include "MotorControl.hpp"
@@ -23,7 +24,7 @@ public:
   void step(SensorReadings inp);
 
 private:
-  // OpponentDetector detector;
+  OpponentDetector detector;
 };
 
 #endif

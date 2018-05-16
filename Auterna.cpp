@@ -33,7 +33,7 @@ void Auterna::step(SensorReadings inp) {
 
     switch(outState) {
       case ActivationState::on:
-        // this->detector.step(inp);
+        this->detector.step(inp);
         break;
 
       case ActivationState::off:
