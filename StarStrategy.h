@@ -25,6 +25,7 @@ public:
 };
 
 class StarStrategy : public StateMachine<SearchStrategyInput, StarSearchState, StarSearchInsideAction> {
+public:
     StarStrategy() : StateMachine(StarSearchState(false, StarSearchInsideAction::forward, 0)) {}
 
     StarSearchInsideAction getNextValues(StarSearchState state, SearchStrategyInput inp, StarSearchState& outState);

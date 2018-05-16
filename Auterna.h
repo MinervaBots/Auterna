@@ -1,5 +1,5 @@
-#ifndef AUTERNA
-#define AUTERNA
+#ifndef AUTERNA_H
+#define AUTERNA_H
 
 #include "StateMachine.h"
 #include "SensorReadings.h"
@@ -13,10 +13,6 @@ enum class ActivationState {
 };
 
 //enum class ActivationAction {
-//  stop,
-//  go  
-//};
-
 class Auterna : public StateMachine<SensorReadings, ActivationState, ActivationState> {
 public:
   Auterna() : StateMachine(ActivationState::off) {
