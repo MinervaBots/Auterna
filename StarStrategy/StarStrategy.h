@@ -5,9 +5,9 @@
 #define CURVE_TIME_MILLIS 1000
 
 #include "Arduino.h"
-#include "StateMachine.h"
-#include "SensorReadings.h"
-#include "MotorControl.hpp"
+#include "../StateMachine/StateMachine.h"
+#include "../SensorReadings.h"
+#include "../MotorControl.hpp"
 
 enum class StarSearchInsideAction {
   forward,

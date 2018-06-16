@@ -1,11 +1,10 @@
 #ifndef AUTERNA_H
 #define AUTERNA_H
 
-#include "StateMachine.h"
-#include "OpponentDetector.h"
-#include "SensorReadings.h"
+#include "../StateMachine/StateMachine.h"
+#include "../OpponentDetector/OpponentDetector.h"
+#include "../SensorReadings.h"
 #include "Arduino.h"
-#include "MotorControl.hpp"
 
 enum class ActivationState {
   off,
@@ -17,7 +16,7 @@ enum class ActivationState {
 class Auterna : public StateMachine<SensorReadings, ActivationState, ActivationState> {
 public:
   Auterna() : StateMachine(ActivationState::off) {
-    // this->detector = OpponentDetector();  
+    this->detector = OpponentDetector();  
   }
 
   ActivationState getNextValues(ActivationState state, SensorReadings inp, ActivationState& outState);

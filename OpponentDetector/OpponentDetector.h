@@ -1,9 +1,9 @@
 #ifndef OPPONENT_DETECTOR_H
 #define OPPONENT_DETECTOR_H
 
-#include "SensorControl.h"
-#include "StateMachine.h"
-#include "StarStrategy.h"
+#include "../SensorControl.h"
+#include "../StateMachine/StateMachine.h"
+#include "../StarStrategy/StarStrategy.h"
 
 enum class Detection {
   Detected,
