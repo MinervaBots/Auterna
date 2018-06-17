@@ -1,6 +1,8 @@
 #ifndef PID_CONTROL_H
 #define PID_CONTROL_H
 
+#include <Arduino.h>
+
 class  PID
 {
 public:

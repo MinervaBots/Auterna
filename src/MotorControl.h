@@ -4,6 +4,8 @@
 #define LEFT_CHANNEL_PIN 1
 #define RIGHT_CHANNEL_PIN 2
 
+#include <Arduino.h>
+
 //class MotorControl {
 //  public:
 //    MotorControl(const int leftChannel, const int rightChannel): 
