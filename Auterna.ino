@@ -1,8 +1,7 @@
 #include "PidControl.h"
-#include "SensorControl.h"
 #include "MotorControl.hpp"
 #include "Auterna/Auterna.h"
-#include "SensorReadings.h"
+#include "Sensors.h"
 
 void setup() {
  

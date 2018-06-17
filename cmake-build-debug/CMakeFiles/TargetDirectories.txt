@@ -1,0 +1,3 @@
+C:/Users/rafae/Documents/MinervaBots/Auterna/cmake-build-debug/CMakeFiles/Auterna.dir
+C:/Users/rafae/Documents/MinervaBots/Auterna/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/rafae/Documents/MinervaBots/Auterna/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,47 +1,55 @@
+#include <Sensors.h>
 #include "StarStrategy.h"
 
-StarSearchInsideAction StarStrategy::getNextValues(StarSearchState state, SearchStrategyInput inp, StarSearchState& outState) {
-  if(inp.leftEdgeValue || inp.rightEdgeValue) {
-    if(state.action == StarSearchInsideAction::forward) {
-      outState.action = StarSearchInsideAction::backward;
-      outState.actionTimeout = millis() + BACKWARD_TIME_MILLIS;
-    }
-    
-  } else {
-    switch(state.action) {
-        
-        case StarSearchInsideAction::backward:
-          if(millis() > state.actionTimeout) {
-            outState.action = StarSearchInsideAction::curve;
-            outState.actionTimeout = millis() + CURVE_TIME_MILLIS;
-          }
-          break;
-        
-        case StarSearchInsideAction::curve:
-          if(millis() > state.actionTimeout)
-            outState.action = StarSearchInsideAction::forward;
-          break;
-      }
-  }
+tuple<StarSearchState, StarSearchInsideAction>
+StarStrategy::getNextValues(const StarSearchState &state,
+                            const Input &inp) const {
+    // TODO Uncomment Arduino functions
+    StarSearchState nextState {false, StarSearchInsideAction::forward, 0};
 
-  return outState.action;
+    if (inp.leftEdgeDetected || inp.rightEdgeDetected) {
+        if (state.action == StarSearchInsideAction::forward) {
+            nextState.action = StarSearchInsideAction::backward;
+            nextState.actionTimeout = /*millis() */0 + BACKWARD_TIME_MILLIS;
+        }
+
+    } else {
+        switch (state.action) {
+
+            case StarSearchInsideAction::backward:
+                if (/*millis()*/0 > state.actionTimeout) {
+                    nextState.action = StarSearchInsideAction::curve;
+                    nextState.actionTimeout = /*millis()*/ 0 + CURVE_TIME_MILLIS;
+                }
+                break;
+
+            case StarSearchInsideAction::curve:
+                if (/*millis()*/0 > state.actionTimeout)
+                    nextState.action = StarSearchInsideAction::forward;
+                break;
+        }
+    }
+
+    return make_tuple(nextState, nextState.action);
 }
 
-void StarStrategy::step(SearchStrategyInput inp) {
-  StarSearchState outState(false, StarSearchInsideAction::forward, 0);
-  StarSearchInsideAction action = getNextValues(this->_state, inp, outState);
+void StarStrategy::step(const Input &inp) {
+    StarSearchState nextState {false, StarSearchInsideAction::forward, 0};
+    StarSearchInsideAction action;
 
-  this->_state = outState;
+    tie(nextState, action) = getNextValues(this->_state, inp);
 
-  switch(action) {
-    case StarSearchInsideAction::forward:
-      drive(255, 0);
-      break;
-    case StarSearchInsideAction::backward:
-      drive(0, 0);
-      break;
-    case StarSearchInsideAction::curve:
-      drive(0, 255);
-      break;       
-  }
+    this->_state = nextState;
+
+    switch (action) {
+        case StarSearchInsideAction::forward:
+            drive(255, 0);
+            break;
+        case StarSearchInsideAction::backward:
+            drive(0, 0);
+            break;
+        case StarSearchInsideAction::curve:
+            drive(0, 255);
+            break;
+    }
 }

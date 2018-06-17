@@ -1,50 +1,41 @@
 #include "OpponentDetector.h"
 
-Detection OpponentDetector::isDetected(SensorReadings inp){ 
-    for(int i = 0; i != 5; ++i){
-      if (inp.opponent[i])
-          return Detection::Detected;
+bool OpponentDetector::isDetected(const Input &inp) const {
+    for (int i = 0; i != 5; ++i) {
+        if (inp.opponent[i])
+            return true;
     }
-      return Detection::notDetected;
+    return false;
 }
 
-SearchStrategyInput OpponentDetector::createSearchStrategyInput(SensorReadings inp) {
-  SearchStrategyInput input;
+tuple<Detection, Detection>
+OpponentDetector::getNextValues(const Detection &state,
+                                const Input &inp) const {
+    Detection nextState;
 
-  input.leftEdgeValue = inp.leftEdgeValue;
-  input.rightEdgeValue = inp.rightEdgeValue;
+    if(isDetected(inp))
+        nextState = Detection::Detected;
+    else
+        nextState = Detection::notDetected;
 
-  return input;
+    return make_tuple(nextState, nextState);
 }
 
-Detection OpponentDetector::getNextValues(Detection state,Detection inp,Detection& outState){
-  switch(inp) {
-    case Detection::Detected:    
-      outState = Detection::Detected;
-      break;
-    case Detection::notDetected:
-      outState = Detection::Detected;
-      break;
-    }
-    return outState;
- }
+void OpponentDetector::step(const Input &inp) {
+    Detection nextState {Detection::notDetected};
 
-void OpponentDetector::step(SensorReadings inp){
-    Detection outState = Detection::notDetected;
+    tie(nextState, std::ignore) = getNextValues(this->_state, inp);
 
-    getNextValues(this->_state, this->isDetected(inp), outState);
+    this->_state = nextState;
 
-    this->_state = outState;
-    
-    switch(outState){
-      case Detection::Detected:
-         //CasoTavendo tracking.steps
-         break;
-      case Detection::notDetected:
-        SearchStrategyInput input = createSearchStrategyInput(inp);
-        search.step(input);
-        break;
-      
+    switch (nextState) {
+        case Detection::Detected:
+            // Perseguir com PID
+            break;
+        case Detection::notDetected:
+            search.step(inp);
+            break;
+
     }
 }
 
