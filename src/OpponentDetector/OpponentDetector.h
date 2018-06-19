@@ -3,6 +3,9 @@
 
 #include "../StateMachine/StateMachine.h"
 #include "../StarStrategy/StarStrategy.h"
+#include "../motion.h"
+
+using motion::drive;
 
 enum class Detection {
     Detected,

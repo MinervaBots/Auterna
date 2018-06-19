@@ -6,8 +6,10 @@
 
 #include "../StateMachine/StateMachine.h"
 #include "../Sensors.h"
-#include "../MotorControl.hpp"
+#include "../motion.h"
 #include "Arduino.h"
+
+using motion::drive;
 
 enum class StarSearchInsideAction {
     forward,
