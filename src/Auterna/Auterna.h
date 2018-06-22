@@ -6,6 +6,8 @@
 #include "../Sensors.h"
 #include <Arduino.h>
 
+using Sensors::Input;
+
 enum class ActivationState {
     off,
     turningOn,

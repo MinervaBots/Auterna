@@ -5,6 +5,7 @@
 #include "../StarStrategy/StarStrategy.h"
 #include "../motion.h"
 
+using Sensors::Input;
 using motion::drive;
 
 enum class Detection {

@@ -9,6 +9,7 @@
 #include "../motion.h"
 #include "Arduino.h"
 
+using Sensors::Input;
 using motion::drive;
 
 enum class StarSearchInsideAction {
