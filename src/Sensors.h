@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <tuple>
-#include "pins.h"
+#include "pins/pins.h"
 
 using std::tuple;
 using std::make_tuple;
