@@ -25,7 +25,7 @@ namespace motion {
 
     // Signal related constants
     constexpr int DAC_resolution = 12; // Any integer in the interval [2, 16]
-    constexpr double refVoltage = 3.3;
+    constexpr double refVoltage = 3.6;
     constexpr int minSignalVoltage = 0;
     constexpr int maxSignalVoltage = 2;
 

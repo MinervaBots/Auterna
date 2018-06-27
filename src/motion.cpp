@@ -22,7 +22,7 @@ void motion::drive(double linearSpeed, double angularSpeed) {
 
     // Apply signal
     analogWrite(pins::dac_ch0, mapVoltageToDACInteger(leftVoltage));
-    analogWrite(pins::dac_ch0, mapVoltageToDACInteger(rightVoltage));
+    analogWrite(pins::dac_ch1, mapVoltageToDACInteger(rightVoltage));
 }
 
 constexpr tuple<double, double>
@@ -53,13 +53,13 @@ motion::constrainSpeeds(const double linearSpeed, const double angularSpeed) {
 constexpr tuple<double, double>
 motion::unicycleToDifferential(const double linearSpeed, const double angularSpeed) {
     return make_tuple(
-        (2*linearSpeed - angularSpeed*wheelBase)/2*wheelRadius, // Right wheel angular speed
-        (2*linearSpeed + angularSpeed*wheelBase)/2*wheelRadius  // Left wheel angular speed
+        (2*linearSpeed - angularSpeed*wheelBase)/(2*wheelRadius), // Right wheel angular speed
+        (2*linearSpeed + angularSpeed*wheelBase)/(2*wheelRadius)  // Left wheel angular speed
     );
 }
 
 constexpr double motion::angularSpeedToControllerVoltage(const double angularWheelSpeed) {
-    return angularWheelSpeed/maxAngularSpeed + 1;
+    return angularWheelSpeed/maxWheelSpeed + 1;
 }
 
 constexpr int motion::mapVoltageToDACInteger(const double voltage) {

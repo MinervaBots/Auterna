@@ -1,15 +1,20 @@
 #include "Sensors.h"
 
+QTRSensorsRC Sensors::_qtrrc((unsigned char[]) {pins::bef, pins::bdf}, 
+  		num_edge_sensors, num_samples_per_sensor, QTR_NO_EMITTER_PIN);
+
+unsigned int Sensors::_edgeSensorValues[num_edge_sensors];
+
 void Sensors::collectInput(Input &inp, Stream &reader) {
     // Read opponent sensors
-    inp.opponent[0] = digitalReadFast(pins::od);
-    inp.opponent[1] = digitalReadFast(pins::odd);
+    inp.opponent[0] = digitalReadFast(pins::oe);
+    inp.opponent[1] = digitalReadFast(pins::ode);
     inp.opponent[2] = digitalReadFast(pins::oc);
-    inp.opponent[3] = digitalReadFast(pins::ode);
-    inp.opponent[4] = digitalReadFast(pins::oe);
+    inp.opponent[3] = digitalReadFast(pins::odd);
+    inp.opponent[4] = digitalReadFast(pins::od);
 
     // Read edge sensors
-    tie(inp.leftEdgeDetected, inp.rightEdgeDetected) = readEdgeSensorsDigital(pins::bef, pins::bdf);
+    tie(inp.leftEdgeDetected, inp.rightEdgeDetected) = readEdgeSensors();
 
     // Bluetooth commands
     if(reader.available())
@@ -43,55 +48,57 @@ void Sensors::collectMockInput(Input &inp, Stream &reader) {
     inp.shutdownCommand = false;
 }
 
-tuple<bool, bool>
-Sensors::readEdgeSensorsDigital(const int leftEdgeSensorPin, const int rightEdgeSensorPin) {
+tuple<int, int>
+Sensors::readEdgeSensors() {
+    Sensors::_qtrrc.read(Sensors::_edgeSensorValues);
+
     return make_tuple(
-        digitalReadFast(leftEdgeSensorPin),
-        digitalReadFast(rightEdgeSensorPin)
+        Sensors::_edgeSensorValues[0],
+        Sensors::_edgeSensorValues[1]
     );
 }
 
-tuple<bool, bool>
-readEdgeSensorsTiming(const int leftEdgeSensorPin, const int rightEdgeSensorPin, unsigned int timeout = 2000) {
-    // Carrega capacitores por 10 us
-    pinMode(leftEdgeSensorPin, OUTPUT);
-    pinMode(rightEdgeSensorPin, OUTPUT);
+// tuple<bool, bool>
+// readEdgeSensorsTiming(const int leftEdgeSensorPin, const int rightEdgeSensorPin, unsigned int timeout = 2000) {
+//     // Carrega capacitores por 10 us
+//     pinMode(leftEdgeSensorPin, OUTPUT);
+//     pinMode(rightEdgeSensorPin, OUTPUT);
 
-    digitalWriteFast(leftEdgeSensorPin, HIGH);
-    digitalWriteFast(rightEdgeSensorPin, HIGH);
+//     digitalWriteFast(leftEdgeSensorPin, HIGH);
+//     digitalWriteFast(rightEdgeSensorPin, HIGH);
 
-    delayMicroseconds(10);
+//     delayMicroseconds(10);
 
-    pinMode(leftEdgeSensorPin, INPUT);
-    pinMode(rightEdgeSensorPin, INPUT);
+//     pinMode(leftEdgeSensorPin, INPUT);
+//     pinMode(rightEdgeSensorPin, INPUT);
 
-    unsigned int leftReading = timeout;
-    unsigned int rightReading = timeout;
+//     unsigned int leftReading = timeout;
+//     unsigned int rightReading = timeout;
 
-    bool leftWait = true, rightWait = true; // Marca que os sensores ainda estão aguardando resposta
+//     bool leftWait = true, rightWait = true; // Marca que os sensores ainda estão aguardando resposta
 
-    bool leftTempReading = 0, rightTempReading = 0;
+//     bool leftTempReading = 0, rightTempReading = 0;
     
-    unsigned int startTime = micros(), time = 0;
-    while((time = micros() - startTime) < timeout) {
-        if(!(leftTempReading = digitalReadFast(leftEdgeSensorPin)) && leftWait) {
-            leftReading = time;
-            leftWait = false;
-        }
+//     unsigned int startTime = micros(), time = 0;
+//     while((time = micros() - startTime) < timeout) {
+//         if(!(leftTempReading = digitalReadFast(leftEdgeSensorPin)) && leftWait) {
+//             leftReading = time;
+//             leftWait = false;
+//         }
 
-        if(!(rightTempReading = digitalReadFast(rightEdgeSensorPin)) && rightWait) {
-            rightReading = time;
-            rightWait = false;
-        }
+//         if(!(rightTempReading = digitalReadFast(rightEdgeSensorPin)) && rightWait) {
+//             rightReading = time;
+//             rightWait = false;
+//         }
 
-        if(!leftWait && !rightWait) break;
-    }
+//         if(!leftWait && !rightWait) break;
+//     }
 
-    return make_tuple(
-        leftReading > Sensors::edgeSensorsTimeThreshold,
-        rightReading > Sensors::edgeSensorsTimeThreshold
-    );
-}
+//     return make_tuple(
+//         leftReading > Sensors::edgeSensorsTimeThreshold,
+//         rightReading > Sensors::edgeSensorsTimeThreshold
+//     );
+// }
 
 void Sensors::printInput(const Input &inp, Print &printer) {
     printer.print("Op sensors: [");
@@ -107,9 +114,9 @@ void Sensors::printInput(const Input &inp, Print &printer) {
     printer.println("]");
 
     printer.print("LeftEdgeDetected: ");
-    printer.println(inp.leftEdgeDetected ? "True" : "False");
+    printer.println(inp.leftEdgeDetected);
 
     printer.print("RightEdgeDetected: ");
-    printer.println(inp.rightEdgeDetected ? "True" : "False");
+    printer.println(inp.rightEdgeDetected);
 }
 

@@ -10,8 +10,8 @@ void pins::initPins() {
         pinMode(odd, INPUT);
 
         // Usar em conjunto com readEdgeSensorsDigital
-        pinMode(bef, INPUT_PULLUP);
-        pinMode(bdf, INPUT_PULLUP);
+        pinMode(bef, INPUT);
+        pinMode(bdf, INPUT);
 
         // Usar em conjunto com readEdgeSensorsTiming
         // pinMode(bef, INPUT);
