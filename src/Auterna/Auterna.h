@@ -4,6 +4,7 @@
 #include "../StateMachine/StateMachine.h"
 #include "../OpponentDetector/OpponentDetector.h"
 #include "../Sensors.h"
+#include "../motion.h"
 #include <Arduino.h>
 
 using Sensors::Input;
@@ -17,7 +18,7 @@ enum class ActivationState {
 //enum class ActivationAction {
 class Auterna : public StateMachine<Input, ActivationState> {
 public:
-    Auterna();
+    Auterna(Print &printer);
 
     tuple<ActivationState, ActivationState>
     getNextValues(const ActivationState &state,
@@ -27,6 +28,7 @@ public:
 
 private:
     OpponentDetector detector;
+    Print &printer;
 };
 
 #endif

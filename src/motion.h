@@ -25,7 +25,7 @@ namespace motion {
 
     // Signal related constants
     constexpr int DAC_resolution = 12; // Any integer in the interval [2, 16]
-    constexpr double refVoltage = 3.6;
+    constexpr double refVoltage = 3.0;
     constexpr int minSignalVoltage = 0;
     constexpr int maxSignalVoltage = 2;
 
@@ -52,6 +52,8 @@ namespace motion {
     // The motor controller expects a signal in the interval 0-2V, where 0V = full reverse,
     // 1V = stop and 2V = full forward.
     constexpr double angularSpeedToControllerVoltage(const double angularWheelSpeed);
+
+    constexpr double constrainVoltage(const double voltage);
 
     // Map a desired voltage to an integer in the interval expected by the analogWrite function
     constexpr int mapVoltageToDACInteger(const double voltage);

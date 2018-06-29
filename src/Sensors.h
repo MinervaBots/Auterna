@@ -11,17 +11,13 @@ using std::make_tuple;
 using std::tie;
 
 namespace Sensors {
-	typedef struct {
-		bool opponent[5]; // Can be optimized into a bitset, in case we need memory
-		int leftEdgeDetected;
-		int rightEdgeDetected;
-		bool turnOnCommand;
-		bool shutdownCommand;
-	} Input;
-
 	constexpr char onSignal = '1';
 	constexpr char offSignal = '0';
 	
+	// Opponent sensors constants
+	constexpr int opponent_sensors_number = 5;
+	constexpr double weights[opponent_sensors_number] = {20, 10, 0, -10, -20};
+
 	// Edge sensors constants
 	constexpr int num_samples_per_sensor = 4;
 	constexpr int num_edge_sensors = 2;
@@ -29,6 +25,14 @@ namespace Sensors {
 
 	extern QTRSensorsRC _qtrrc;
 	extern unsigned int _edgeSensorValues[num_edge_sensors];
+
+	typedef struct {
+		bool opponent[opponent_sensors_number]; // Can be optimized into a bitset, in case we need memory
+		bool leftEdgeDetected;
+		bool rightEdgeDetected;
+		bool turnOnCommand;
+		bool shutdownCommand;
+	} Input;
 
 	void collectInput(Input &inp, Stream &reader);
 	void collectMockInput(Input &inp, Stream &reader);
@@ -38,6 +42,16 @@ namespace Sensors {
 	readEdgeSensors();
 
 	void printInput(const Input &inp, Print &printer);
+
+	double pid_control(double error);
+
+    // returns true if at least one of the opponent sensors is triggered
+    bool isDetected(const Input &inp);
+
+    // Returns true if and only if the central opponent sensor is triggered
+    bool centralDetected(const Input &inp);
+
+    double headingError(const bool (&readings)[opponent_sensors_number], const double (&weights)[opponent_sensors_number]);
 }
 
 #endif

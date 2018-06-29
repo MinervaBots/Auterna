@@ -12,19 +12,19 @@ using Sensors::printInput;
 void setup() {
   pins::initPins();
   motion::drive_init();
-
+  motion::drive(0, 0);
   Serial.begin(9600);
 
   digitalWrite(pins::led, HIGH);
 }
 
-Auterna auterna;
+Auterna auterna(Serial);
 Input inp;
 void loop() {
   collectInput(inp, Serial);
-  printInput(inp, Serial);
-  delay(800);
-  // auterna.step(inp);
+  // printInput(inp, Serial);
+  // delay(800);
+  auterna.step(inp);
 }
 
 

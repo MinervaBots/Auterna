@@ -5,7 +5,8 @@
 
 namespace pins {
     constexpr int led = 13;
-
+    constexpr int button = 11;
+    
     // DAC channels for motor control
     constexpr int dac_ch0 = A21;
     constexpr int dac_ch1 = A22;

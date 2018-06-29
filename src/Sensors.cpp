@@ -53,52 +53,10 @@ Sensors::readEdgeSensors() {
     Sensors::_qtrrc.read(Sensors::_edgeSensorValues);
 
     return make_tuple(
-        Sensors::_edgeSensorValues[0],
-        Sensors::_edgeSensorValues[1]
+        Sensors::_edgeSensorValues[0] < edgeSensorThreshold,
+        Sensors::_edgeSensorValues[1] < edgeSensorThreshold
     );
 }
-
-// tuple<bool, bool>
-// readEdgeSensorsTiming(const int leftEdgeSensorPin, const int rightEdgeSensorPin, unsigned int timeout = 2000) {
-//     // Carrega capacitores por 10 us
-//     pinMode(leftEdgeSensorPin, OUTPUT);
-//     pinMode(rightEdgeSensorPin, OUTPUT);
-
-//     digitalWriteFast(leftEdgeSensorPin, HIGH);
-//     digitalWriteFast(rightEdgeSensorPin, HIGH);
-
-//     delayMicroseconds(10);
-
-//     pinMode(leftEdgeSensorPin, INPUT);
-//     pinMode(rightEdgeSensorPin, INPUT);
-
-//     unsigned int leftReading = timeout;
-//     unsigned int rightReading = timeout;
-
-//     bool leftWait = true, rightWait = true; // Marca que os sensores ainda estão aguardando resposta
-
-//     bool leftTempReading = 0, rightTempReading = 0;
-    
-//     unsigned int startTime = micros(), time = 0;
-//     while((time = micros() - startTime) < timeout) {
-//         if(!(leftTempReading = digitalReadFast(leftEdgeSensorPin)) && leftWait) {
-//             leftReading = time;
-//             leftWait = false;
-//         }
-
-//         if(!(rightTempReading = digitalReadFast(rightEdgeSensorPin)) && rightWait) {
-//             rightReading = time;
-//             rightWait = false;
-//         }
-
-//         if(!leftWait && !rightWait) break;
-//     }
-
-//     return make_tuple(
-//         leftReading > Sensors::edgeSensorsTimeThreshold,
-//         rightReading > Sensors::edgeSensorsTimeThreshold
-//     );
-// }
 
 void Sensors::printInput(const Input &inp, Print &printer) {
     printer.print("Op sensors: [");
@@ -118,5 +76,29 @@ void Sensors::printInput(const Input &inp, Print &printer) {
 
     printer.print("RightEdgeDetected: ");
     printer.println(inp.rightEdgeDetected);
+}
+
+bool Sensors::isDetected(const Input &inp) {
+    for (int i = 0; i != 5; ++i) {
+        if (inp.opponent[i])
+            return true;
+    }
+    return false;
+}
+
+bool Sensors::centralDetected(const Input &inp) {
+    if(inp.opponent[2])
+        return true;
+    return false;
+}
+
+double Sensors::headingError(const bool (&readings)[opponent_sensors_number], const double (&weights)[opponent_sensors_number]) {
+    double error = 0;
+    int n_triggered = 0;
+    for(int i = 0; i < opponent_sensors_number; i++) {
+        error += readings[i]*weights[i];
+        n_triggered += readings[i];
+    }
+    return n_triggered == 0 ? 0 : error/n_triggered;
 }
 

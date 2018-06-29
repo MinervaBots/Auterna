@@ -59,7 +59,11 @@ motion::unicycleToDifferential(const double linearSpeed, const double angularSpe
 }
 
 constexpr double motion::angularSpeedToControllerVoltage(const double angularWheelSpeed) {
-    return angularWheelSpeed/maxWheelSpeed + 1;
+    return motion::constrainVoltage(angularWheelSpeed/maxWheelSpeed + 1);
+}
+
+constexpr double motion::constrainVoltage(const double voltage) {
+    return constrain(voltage, motion::minSignalVoltage, motion::maxSignalVoltage);
 }
 
 constexpr int motion::mapVoltageToDACInteger(const double voltage) {

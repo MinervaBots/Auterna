@@ -1,19 +1,11 @@
 #include "OpponentDetector.h"
 
-bool OpponentDetector::isDetected(const Input &inp) const {
-    for (int i = 0; i != 5; ++i) {
-        if (inp.opponent[i])
-            return true;
-    }
-    return false;
-}
-
 tuple<Detection, Detection>
 OpponentDetector::getNextValues(const Detection &state,
                                 const Input &inp) const {
     Detection nextState;
 
-    if(isDetected(inp))
+    if(Sensors::isDetected(inp))
         nextState = Detection::Detected;
     else
         nextState = Detection::notDetected;
@@ -28,12 +20,22 @@ void OpponentDetector::step(const Input &inp) {
 
     this->_state = nextState;
 
+    double error = 0, signal = 0; 
     switch (nextState) {
         case Detection::Detected:
+            error = Sensors::headingError(inp.opponent, Sensors::weights);
+            printer.print("Error: ");
+            printer.println(error);
+            signal = Control::PIDRegulator(error);
+            printer.print("Signal: ");
+            printer.println(signal);
             // Perseguir com PID
+             motion::drive(0, signal);
+
             break;
         case Detection::notDetected:
-            search.step(inp);
+            motion::drive(0, 0);
+            // search.step(inp);
             break;
 
     }

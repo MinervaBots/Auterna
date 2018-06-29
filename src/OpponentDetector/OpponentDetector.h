@@ -4,6 +4,9 @@
 #include "../StateMachine/StateMachine.h"
 #include "../StarStrategy/StarStrategy.h"
 #include "../motion.h"
+#include "../Sensors.h"
+#include "../Control.h"
+#include <Arduino.h>
 
 using Sensors::Input;
 using motion::drive;
@@ -16,7 +19,7 @@ enum class Detection {
 class OpponentDetector
         : public StateMachine<Input, Detection> {
 public:
-    OpponentDetector() : StateMachine(Detection::notDetected) {}
+    OpponentDetector(Print &printer) : StateMachine(Detection::notDetected), printer(printer) {}
 
     tuple<Detection, Detection>
     getNextValues(const Detection &state, const Input &inp) const;
@@ -25,9 +28,7 @@ public:
 
 private:
     StarStrategy search;
-    //CorrendoAtras Traking();
-
-    bool isDetected(const Input &inp) const;
+    Print &printer;
 };
 
 #endif
