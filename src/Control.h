@@ -2,7 +2,7 @@
 #define CONTROL_H
 
 namespace Control {
-    constexpr double Kp = 5;
+    constexpr double Kp = 10;
     constexpr double Ki = 0;
     constexpr double Kd = 0;
 

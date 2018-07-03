@@ -1,7 +1,7 @@
 #include "Auterna.h"
 
 Auterna::Auterna(Print &printer) : StateMachine<Input, ActivationState>(
-        ActivationState::turningOn), printer(printer), detector(printer) {}
+        ActivationState::off), printer(printer), detector(printer) {}
 
 tuple<ActivationState, ActivationState>
 Auterna::getNextValues(const ActivationState &state,
@@ -39,6 +39,7 @@ void Auterna::step(const Input &inp) {
 
     switch (nextState) {
         case ActivationState::on:
+            printer.println("Turning on");
             this->detector.step(inp);
             break;
 

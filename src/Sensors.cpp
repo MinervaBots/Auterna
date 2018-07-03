@@ -5,6 +5,12 @@ QTRSensorsRC Sensors::_qtrrc((unsigned char[]) {pins::bef, pins::bdf},
 
 unsigned int Sensors::_edgeSensorValues[num_edge_sensors];
 
+Button Sensors::button {pins::button};
+
+void Sensors::sensorsInit() {
+    Sensors::button.setState(digitalRead(pins::button));
+}
+
 void Sensors::collectInput(Input &inp, Stream &reader) {
     // Read opponent sensors
     inp.opponent[0] = digitalReadFast(pins::oe);
@@ -17,22 +23,26 @@ void Sensors::collectInput(Input &inp, Stream &reader) {
     tie(inp.leftEdgeDetected, inp.rightEdgeDetected) = readEdgeSensors();
 
     // Bluetooth commands
-    if(reader.available())
-        switch(reader.read()) {
-            case onSignal:
-                inp.turnOnCommand = true;
-                inp.shutdownCommand = false;
-                break;
-            case offSignal:
-                inp.turnOnCommand = false;
-                inp.shutdownCommand = true;
-                break;
-            default:
-                inp.turnOnCommand = inp.shutdownCommand = false;
-                break;
-        }
-    else
-        inp.turnOnCommand = inp.shutdownCommand = false;
+    // if(reader.available())
+    //     switch(reader.read()) {
+    //         case onSignal:
+    //             inp.turnOnCommand = true;
+    //             inp.shutdownCommand = false;
+    //             break;
+    //         case offSignal:
+    //             inp.turnOnCommand = false;
+    //             inp.shutdownCommand = true;
+    //             break;
+    //         default:
+    //             inp.turnOnCommand = inp.shutdownCommand = false;
+    //             break;
+    //     }
+    // else
+    //     inp.turnOnCommand = inp.shutdownCommand = false;
+
+    // Button
+    inp.turnOnCommand = Sensors::button.read();
+    inp.shutdownCommand = !inp.turnOnCommand;
 }
 
 void Sensors::collectMockInput(Input &inp, Stream &reader) {
@@ -76,6 +86,12 @@ void Sensors::printInput(const Input &inp, Print &printer) {
 
     printer.print("RightEdgeDetected: ");
     printer.println(inp.rightEdgeDetected);
+
+    printer.print("turnOnCommand: ");
+    printer.println(inp.turnOnCommand);
+
+    printer.print("shutdownCommand: ");
+    printer.println(inp.shutdownCommand);
 }
 
 bool Sensors::isDetected(const Input &inp) {

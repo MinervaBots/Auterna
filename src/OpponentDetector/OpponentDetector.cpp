@@ -29,8 +29,33 @@ void OpponentDetector::step(const Input &inp) {
             signal = Control::PIDRegulator(error);
             printer.print("Signal: ");
             printer.println(signal);
+
+            double leftWheelSpeed, rightWheelSpeed, leftVoltage, rightVoltage, lin, ang;
+
+            // constrain parameters
+            tie(lin, ang) = motion::constrainSpeeds(0, signal);
+
+            // Convert models
+            tie(leftWheelSpeed, rightWheelSpeed) = motion::unicycleToDifferential(lin, ang);
+
+            // Ensure angular speed
+            tie(leftWheelSpeed, rightWheelSpeed) = motion::ensureAngularSpeed(leftWheelSpeed, rightWheelSpeed);  
+
+            // Calculate corresponding voltages
+            leftVoltage = motion::angularSpeedToControllerVoltage(leftWheelSpeed);
+            rightVoltage = motion::angularSpeedToControllerVoltage(rightWheelSpeed);
+
+            printer.print("leftVoltage: ");
+            printer.println(leftVoltage);
+
+            printer.print("rightVoltage: ");
+            printer.println(rightVoltage);
+
             // Perseguir com PID
-             motion::drive(0, signal);
+            //if(error == 0 && Sensors::centralDetected(inp))
+              //  motion::drive(1000, 0);
+            //else
+                motion::drive(-motion::maxLinearSpeed/2, signal);
 
             break;
         case Detection::notDetected:

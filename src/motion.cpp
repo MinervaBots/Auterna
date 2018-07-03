@@ -25,7 +25,7 @@ void motion::drive(double linearSpeed, double angularSpeed) {
     analogWrite(pins::dac_ch1, mapVoltageToDACInteger(rightVoltage));
 }
 
-constexpr tuple<double, double>
+tuple<double, double>
 motion::ensureAngularSpeed(double leftWheelAngularSpeed, double rightWheelAngularSpeed) {
     double maxSpeed = max(leftWheelAngularSpeed, rightWheelAngularSpeed);
     double minSpeed = min(leftWheelAngularSpeed, rightWheelAngularSpeed);
@@ -42,7 +42,7 @@ motion::ensureAngularSpeed(double leftWheelAngularSpeed, double rightWheelAngula
     return make_tuple(leftWheelAngularSpeed, rightWheelAngularSpeed);
 }
 
-constexpr tuple<double, double>
+tuple<double, double>
 motion::constrainSpeeds(const double linearSpeed, const double angularSpeed) {
     return make_tuple(
         constrain(linearSpeed, -maxLinearSpeed, maxLinearSpeed),
@@ -50,7 +50,7 @@ motion::constrainSpeeds(const double linearSpeed, const double angularSpeed) {
     );
 }
 
-constexpr tuple<double, double>
+tuple<double, double>
 motion::unicycleToDifferential(const double linearSpeed, const double angularSpeed) {
     return make_tuple(
         (2*linearSpeed - angularSpeed*wheelBase)/(2*wheelRadius), // Right wheel angular speed
@@ -58,14 +58,14 @@ motion::unicycleToDifferential(const double linearSpeed, const double angularSpe
     );
 }
 
-constexpr double motion::angularSpeedToControllerVoltage(const double angularWheelSpeed) {
+double motion::angularSpeedToControllerVoltage(const double angularWheelSpeed) {
     return motion::constrainVoltage(angularWheelSpeed/maxWheelSpeed + 1);
 }
 
-constexpr double motion::constrainVoltage(const double voltage) {
+double motion::constrainVoltage(const double voltage) {
     return constrain(voltage, motion::minSignalVoltage, motion::maxSignalVoltage);
 }
 
-constexpr int motion::mapVoltageToDACInteger(const double voltage) {
+int motion::mapVoltageToDACInteger(const double voltage) {
     return (voltage/refVoltage) * ((1 << DAC_resolution) - 1);
 }

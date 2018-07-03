@@ -12,8 +12,8 @@ using std::tie;
 
 namespace motion {
     // Dynamics related constants
-    constexpr double wheelBase = 10;  // Distance between wheels
-    constexpr double wheelRadius = 5;
+    constexpr double wheelBase = 187;  // Distance between wheels
+    constexpr double wheelRadius = 41;
 
     constexpr int maxRPM = 8000;             // Physical maximum
     constexpr int limitRPM = maxRPM / 4;     // Artificial limit
@@ -37,26 +37,26 @@ namespace motion {
 
     // Corrects the wheels speeds in order to guarantee the desired robot's angular velocity
     // Consequently, the robot's linear velocity might be altered
-    constexpr tuple<double, double> 
+    tuple<double, double> 
     ensureAngularSpeed(double leftWheelAngularSpeed, double rightWheelAngularSpeed);
 
     // Restrict the parameters to the physical limits of the robot
-    constexpr tuple<double, double>
+    tuple<double, double>
     constrainSpeeds(const double linearSpeed, const double angularSpeed);
 
     // Convert the control model's motion parameters, linear speed and angular speed,
     // to the robot's motion parameters, the angular speeds of the wheels
-    constexpr tuple<double, double>
+    tuple<double, double>
     unicycleToDifferential(const double linearSpeed, const double angularSpeed);
 
     // The motor controller expects a signal in the interval 0-2V, where 0V = full reverse,
     // 1V = stop and 2V = full forward.
-    constexpr double angularSpeedToControllerVoltage(const double angularWheelSpeed);
+    double angularSpeedToControllerVoltage(const double angularWheelSpeed);
 
-    constexpr double constrainVoltage(const double voltage);
+    double constrainVoltage(const double voltage);
 
     // Map a desired voltage to an integer in the interval expected by the analogWrite function
-    constexpr int mapVoltageToDACInteger(const double voltage);
+    int mapVoltageToDACInteger(const double voltage);
 }
 
 #endif

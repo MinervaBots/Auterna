@@ -5,6 +5,7 @@
 #include <tuple>
 #include <QTRSensors.h>
 #include "pins/pins.h"
+#include "Button.h"
 
 using std::tuple;
 using std::make_tuple;
@@ -16,7 +17,7 @@ namespace Sensors {
 	
 	// Opponent sensors constants
 	constexpr int opponent_sensors_number = 5;
-	constexpr double weights[opponent_sensors_number] = {20, 10, 0, -10, -20};
+	constexpr double weights[opponent_sensors_number] = {4, 2, 0, -2, -4};
 
 	// Edge sensors constants
 	constexpr int num_samples_per_sensor = 4;
@@ -26,6 +27,9 @@ namespace Sensors {
 	extern QTRSensorsRC _qtrrc;
 	extern unsigned int _edgeSensorValues[num_edge_sensors];
 
+	// Button
+	extern Button button;
+
 	typedef struct {
 		bool opponent[opponent_sensors_number]; // Can be optimized into a bitset, in case we need memory
 		bool leftEdgeDetected;
@@ -34,6 +38,7 @@ namespace Sensors {
 		bool shutdownCommand;
 	} Input;
 
+	void sensorsInit();
 	void collectInput(Input &inp, Stream &reader);
 	void collectMockInput(Input &inp, Stream &reader);
 
