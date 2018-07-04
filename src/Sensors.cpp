@@ -108,6 +108,10 @@ bool Sensors::centralDetected(const Input &inp) {
     return false;
 }
 
+bool Sensors::isEdgeDetected(const Input &inp) {
+    return inp.leftEdgeDetected || inp.rightEdgeDetected;
+}
+
 double Sensors::headingError(const bool (&readings)[opponent_sensors_number], const double (&weights)[opponent_sensors_number]) {
     double error = 0;
     int n_triggered = 0;

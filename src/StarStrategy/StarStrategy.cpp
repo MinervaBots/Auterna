@@ -5,7 +5,7 @@ StarStrategy::getNextValues(const StarSearchState &state,
                             const Input &inp) const {
     StarSearchState nextState {false, StarSearchInsideAction::forward, 0};
 
-    if (inp.leftEdgeDetected || inp.rightEdgeDetected) {
+    if (Sensors::isEdgeDetected(inp)) {
         if (state.action == StarSearchInsideAction::forward) {
             nextState.action = StarSearchInsideAction::backward;
             nextState.actionTimeout = millis() + BACKWARD_TIME_MILLIS;
@@ -41,13 +41,13 @@ void StarStrategy::step(const Input &inp) {
 
     switch (action) {
         case StarSearchInsideAction::forward:
-            drive(255, 0);
+            motion::drive(-motion::maxLinearSpeed/4, 0);
             break;
         case StarSearchInsideAction::backward:
-            drive(0, 0);
+            motion::drive(motion::maxLinearSpeed/4, 0);
             break;
         case StarSearchInsideAction::curve:
-            drive(0, 255);
+            motion::drive(0, motion::maxAngularSpeed/4);
             break;
     }
 }

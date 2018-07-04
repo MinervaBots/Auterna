@@ -17,4 +17,7 @@ void pins::initPins() {
 
         pinMode(dac_ch0, OUTPUT);
         pinMode(dac_ch1, OUTPUT);
+
+        // Servo
+        pinMode(servo, OUTPUT);
     }

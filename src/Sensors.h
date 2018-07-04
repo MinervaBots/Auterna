@@ -53,6 +53,9 @@ namespace Sensors {
     // returns true if at least one of the opponent sensors is triggered
     bool isDetected(const Input &inp);
 
+	// Retursn true if at least one of the edge sensors is triggered	
+	bool isEdgeDetected(const Input &inp);
+	
     // Returns true if and only if the central opponent sensor is triggered
     bool centralDetected(const Input &inp);
 

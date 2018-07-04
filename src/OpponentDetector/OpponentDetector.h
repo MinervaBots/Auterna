@@ -12,7 +12,8 @@ using Sensors::Input;
 // using motion::drive;
 
 enum class Detection {
-    Detected,
+    edgeDetected,
+    opponentDetected,
     notDetected
 };
 

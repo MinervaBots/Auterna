@@ -6,8 +6,12 @@
 #include "../Sensors.h"
 #include "../motion.h"
 #include <Arduino.h>
+#include <Servo.h>
 
 using Sensors::Input;
+
+constexpr int flagUpPosition = 0;
+constexpr int flagDownPosition = 90;
 
 enum class ActivationState {
     off,
@@ -15,7 +19,6 @@ enum class ActivationState {
     on
 };
 
-//enum class ActivationAction {
 class Auterna : public StateMachine<Input, ActivationState> {
 public:
     Auterna(Print &printer);
@@ -29,6 +32,7 @@ public:
 private:
     OpponentDetector detector;
     Print &printer;
+    Servo servo;
 };
 
 #endif

@@ -1,7 +1,9 @@
 #include "Auterna.h"
 
 Auterna::Auterna(Print &printer) : StateMachine<Input, ActivationState>(
-        ActivationState::off), printer(printer), detector(printer) {}
+        ActivationState::off), printer(printer), detector(printer) {
+    servo.attach(pins::servo);
+}
 
 tuple<ActivationState, ActivationState>
 Auterna::getNextValues(const ActivationState &state,
@@ -39,12 +41,14 @@ void Auterna::step(const Input &inp) {
 
     switch (nextState) {
         case ActivationState::on:
-            printer.println("Turning on");
+            // printer.println("Turning on");
+            servo.write(flagDownPosition);
             this->detector.step(inp);
             break;
 
         default:
             motion::drive(0, 0);
+            servo.write(flagUpPosition);
             break;
     }
 }

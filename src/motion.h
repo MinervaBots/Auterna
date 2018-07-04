@@ -30,7 +30,7 @@ namespace motion {
     constexpr int maxSignalVoltage = 2;
 
     // DAC setup
-    void drive_init();
+    void driveInit();
 
     // Main motion function
     void drive(double linearSpeed, double angularSpeed);

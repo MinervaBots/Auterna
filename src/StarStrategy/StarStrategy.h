@@ -1,8 +1,8 @@
 #ifndef STAR_STRATEGY_H
 #define STAR_STRATEGY_H
 
-#define BACKWARD_TIME_MILLIS 2000
-#define CURVE_TIME_MILLIS 1000
+constexpr int BACKWARD_TIME_MILLIS = 1000;
+constexpr int CURVE_TIME_MILLIS = 1000;
 
 #include "../StateMachine/StateMachine.h"
 #include "../Sensors.h"
@@ -10,7 +10,6 @@
 #include "Arduino.h"
 
 using Sensors::Input;
-using motion::drive;
 
 enum class StarSearchInsideAction {
     forward,

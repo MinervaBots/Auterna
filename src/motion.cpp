@@ -1,6 +1,6 @@
 #include "motion.h"
 
-void motion::drive_init() {
+void motion::driveInit() {
     analogWriteResolution(DAC_resolution);
 }
 

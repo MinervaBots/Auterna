@@ -22,6 +22,8 @@ namespace pins {
     constexpr int bef = 1;
     constexpr int bdf = 0;
 
+    constexpr int servo = 20;
+    
     void initPins();
 }
 
