@@ -22,7 +22,7 @@ namespace Sensors {
 	// Edge sensors constants
 	constexpr int num_samples_per_sensor = 4;
 	constexpr int num_edge_sensors = 2;
-	constexpr int edgeSensorThreshold = 150;
+	constexpr int edgeSensorThreshold = 500;
 
 	extern QTRSensorsRC _qtrrc;
 	extern unsigned int _edgeSensorValues[num_edge_sensors];

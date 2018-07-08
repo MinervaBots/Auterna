@@ -1,7 +1,7 @@
 #include "Sensors.h"
 
 QTRSensorsRC Sensors::_qtrrc((unsigned char[]) {pins::bef, pins::bdf}, 
-  		num_edge_sensors, num_samples_per_sensor, QTR_NO_EMITTER_PIN);
+  		num_edge_sensors, 2500, QTR_NO_EMITTER_PIN);
 
 unsigned int Sensors::_edgeSensorValues[num_edge_sensors];
 

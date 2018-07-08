@@ -12,8 +12,8 @@ using std::tie;
 
 namespace motion {
     // Dynamics related constants
-    constexpr double wheelBase = 187;  // Distance between wheels
-    constexpr double wheelRadius = 41;
+    constexpr double wheelBase = 132;  // Distance between wheels, in millimeters
+    constexpr double wheelRadius = 72.5/2; // In millimeters;
 
     constexpr int maxRPM = 8000;             // Physical maximum
     constexpr int limitRPM = maxRPM / 4;     // Artificial limit
@@ -25,7 +25,7 @@ namespace motion {
 
     // Signal related constants
     constexpr int DAC_resolution = 12; // Any integer in the interval [2, 16]
-    constexpr double refVoltage = 3.0;
+    constexpr double refVoltage = 3.3;
     constexpr int minSignalVoltage = 0;
     constexpr int maxSignalVoltage = 2;
 
